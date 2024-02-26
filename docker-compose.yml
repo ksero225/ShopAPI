@@ -1,0 +1,10 @@
+version: '3.2'
+
+services:
+  db:
+    image: postgres
+    ports:
+      - "5431:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: zaq1@WSX
