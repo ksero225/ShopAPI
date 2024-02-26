@@ -1,5 +1,5 @@
 Shop Api
-Tools used for this project:__
--Docker__
--Postman__
+Tools used for this project:\
+-Docker\
+-Postman\
 -DBeaver
