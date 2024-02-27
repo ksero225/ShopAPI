@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -42,6 +43,13 @@ public class ProductCategoryController {
         return productCategories.stream().map(productCategoryMapper::mapTo).collect(Collectors.toList());
     }
 
-
+    @GetMapping(path = "/products_categories/{name}")
+    public ResponseEntity<ProductCategoryDto> getProductCategory(@PathVariable("name") String productName){
+        Optional<ProductCategoryEntity> foundProductCategory = categoryService.findOne(productName);
+        return foundProductCategory.map(productCategoryEntity -> {
+            ProductCategoryDto productCategoryDto = productCategoryMapper.mapTo(productCategoryEntity);
+            return new ResponseEntity<>(productCategoryDto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 
 }

@@ -3,6 +3,7 @@ package com.ShopAPI_GROUP.ShopApi.controllers;
 import com.ShopAPI_GROUP.ShopApi.TestDataUtil;
 import com.ShopAPI_GROUP.ShopApi.domain.entities.ProductCategoryEntity;
 import com.ShopAPI_GROUP.ShopApi.services.ProductCategoryService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,6 +45,20 @@ public class ProductCategoryControllerTests {
                         .content(productCategoryEntityJson)
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.categoryName").value("Electronics")
+        );
+    }
+
+    @Test
+    public void testThatCreatedProductCategorySuccessfullyReturnsSavedProductCategory() throws Exception {
+        ProductCategoryEntity productCategoryEntity = TestDataUtil.createTestProductCategoryA();
+        String productCategoryEntityJson = objectMapper.writeValueAsString(productCategoryEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/products_categories/" + productCategoryEntity.getCategoryName())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(productCategoryEntityJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.categoryName").value(productCategoryEntity.getCategoryName())
         );
     }
 

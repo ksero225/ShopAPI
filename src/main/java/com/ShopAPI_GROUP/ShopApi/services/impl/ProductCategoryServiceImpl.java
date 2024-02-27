@@ -6,6 +6,7 @@ import com.ShopAPI_GROUP.ShopApi.services.ProductCategoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -27,5 +28,10 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Override
     public List<ProductCategoryEntity> findAll() {
         return StreamSupport.stream(productCategoryRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<ProductCategoryEntity> findOne(String name) {
+        return productCategoryRepository.findById(name);
     }
 }

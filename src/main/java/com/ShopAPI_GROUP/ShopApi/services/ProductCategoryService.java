@@ -5,9 +5,12 @@ import com.ShopAPI_GROUP.ShopApi.domain.entities.ProductCategoryEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductCategoryService {
     ProductCategoryEntity createProductCategory(String productCategoryName, ProductCategoryEntity productCategoryEntity);
 
     List<ProductCategoryEntity> findAll();
+
+    Optional<ProductCategoryEntity> findOne(String name);
 }
