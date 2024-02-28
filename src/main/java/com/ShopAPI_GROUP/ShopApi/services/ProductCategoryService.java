@@ -1,14 +1,13 @@
 package com.ShopAPI_GROUP.ShopApi.services;
 
-import com.ShopAPI_GROUP.ShopApi.domain.dto.ProductCategoryDto;
 import com.ShopAPI_GROUP.ShopApi.domain.entities.ProductCategoryEntity;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ProductCategoryService {
-    ProductCategoryEntity createProductCategory(String productCategoryName, ProductCategoryEntity productCategoryEntity);
+    ProductCategoryEntity save(String productCategoryName, ProductCategoryEntity productCategoryEntity);
+    ProductCategoryEntity save(ProductCategoryEntity productCategoryEntity);
 
     List<ProductCategoryEntity> findAll();
 

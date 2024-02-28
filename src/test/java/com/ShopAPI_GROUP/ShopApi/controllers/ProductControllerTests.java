@@ -35,7 +35,7 @@ class ProductControllerTests {
     }
 
     @Test
-    public void testThatCreateProductSuccessfullyReturnsHttp201Created() throws Exception{
+    public void testThatCreateProductSuccessfullyReturnsHttp201Created() throws Exception {
         ProductCategoryEntity productCategory = TestDataUtil.createTestProductCategoryA();
         ProductEntity productEntity = TestDataUtil.createTestProductA(productCategory);
         productEntity.setId(null);
@@ -69,5 +69,80 @@ class ProductControllerTests {
                 MockMvcResultMatchers.jsonPath("$.productPrice").value(11.30)
         );
 
+    }
+
+    @Test
+    public void testThatListProductsReturnsHttpStatus200OK() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatListProductsReturnsProduct() throws Exception {
+        ProductCategoryEntity productCategory = TestDataUtil.createTestProductCategoryA();
+        ProductEntity productEntity = TestDataUtil.createTestProductA(productCategory);
+        productEntity.setId(null);
+
+        productService.save(productEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].id").value(1L)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].productName").value("Mouse")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].productPrice").value(11.30)
+        );
+    }
+
+    @Test
+    public void testThatGetProductReturnsHttpStatus200WhenAuthorExist() throws Exception {
+        ProductCategoryEntity productCategory = TestDataUtil.createTestProductCategoryA();
+        ProductEntity productEntity = TestDataUtil.createTestProductA(productCategory);
+
+        productService.save(productEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/products/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetProductReturnsHttpStatus404WhenNoAuthorExist() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/products/9999")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatGetProductReturns0WhenAuthorExist() throws Exception {
+        ProductCategoryEntity productCategory = TestDataUtil.createTestProductCategoryA();
+        ProductEntity productEntity = TestDataUtil.createTestProductA(productCategory);
+
+        productService.save(productEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/products/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.id").value(1L)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.productName").value("Mouse")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.productPrice").value(11.30)
+        );
     }
 }

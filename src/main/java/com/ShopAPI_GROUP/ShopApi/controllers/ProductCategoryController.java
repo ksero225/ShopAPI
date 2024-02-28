@@ -2,9 +2,7 @@ package com.ShopAPI_GROUP.ShopApi.controllers;
 
 
 import com.ShopAPI_GROUP.ShopApi.domain.dto.ProductCategoryDto;
-import com.ShopAPI_GROUP.ShopApi.domain.dto.ProductDto;
 import com.ShopAPI_GROUP.ShopApi.domain.entities.ProductCategoryEntity;
-import com.ShopAPI_GROUP.ShopApi.domain.entities.ProductEntity;
 import com.ShopAPI_GROUP.ShopApi.mappers.Mapper;
 import com.ShopAPI_GROUP.ShopApi.services.ProductCategoryService;
 import org.springframework.http.HttpStatus;
@@ -33,18 +31,18 @@ public class ProductCategoryController {
             @RequestBody ProductCategoryDto productCategoryDto
     ) {
         ProductCategoryEntity productCategoryEntity = productCategoryMapper.mapFrom(productCategoryDto);
-        ProductCategoryEntity savedProductCategoryEntity = categoryService.createProductCategory(productCategoryName, productCategoryEntity);
+        ProductCategoryEntity savedProductCategoryEntity = categoryService.save(productCategoryName, productCategoryEntity);
         return new ResponseEntity<>(productCategoryMapper.mapTo(savedProductCategoryEntity), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/products_categories")
-    public List<ProductCategoryDto> listProductCategories(){
+    public List<ProductCategoryDto> listProductCategories() {
         List<ProductCategoryEntity> productCategories = categoryService.findAll();
         return productCategories.stream().map(productCategoryMapper::mapTo).collect(Collectors.toList());
     }
 
     @GetMapping(path = "/products_categories/{name}")
-    public ResponseEntity<ProductCategoryDto> getProductCategory(@PathVariable("name") String productName){
+    public ResponseEntity<ProductCategoryDto> getProductCategory(@PathVariable("name") String productName) {
         Optional<ProductCategoryEntity> foundProductCategory = categoryService.findOne(productName);
         return foundProductCategory.map(productCategoryEntity -> {
             ProductCategoryDto productCategoryDto = productCategoryMapper.mapTo(productCategoryEntity);

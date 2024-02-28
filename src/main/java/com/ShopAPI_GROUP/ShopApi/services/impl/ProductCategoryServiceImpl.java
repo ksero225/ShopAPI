@@ -20,8 +20,13 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
-    public ProductCategoryEntity createProductCategory(String productCategoryName, ProductCategoryEntity productCategoryEntity) {
+    public ProductCategoryEntity save(String productCategoryName, ProductCategoryEntity productCategoryEntity) {
         productCategoryEntity.setCategoryName(productCategoryName);
+        return productCategoryRepository.save(productCategoryEntity);
+    }
+
+    @Override
+    public ProductCategoryEntity save(ProductCategoryEntity productCategoryEntity) {
         return productCategoryRepository.save(productCategoryEntity);
     }
 
