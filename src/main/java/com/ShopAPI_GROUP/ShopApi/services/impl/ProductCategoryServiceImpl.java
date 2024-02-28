@@ -39,4 +39,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     public Optional<ProductCategoryEntity> findOne(String name) {
         return productCategoryRepository.findById(name);
     }
+
+    @Override
+    public boolean isExists(String productCategoryName) {
+        return productCategoryRepository.existsById(productCategoryName);
+    }
 }

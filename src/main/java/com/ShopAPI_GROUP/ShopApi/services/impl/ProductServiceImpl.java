@@ -33,4 +33,9 @@ public class ProductServiceImpl implements ProductService {
     public Optional<ProductEntity> findOne(Long productId) {
         return productRepository.findById(productId);
     }
+
+    @Override
+    public boolean isExists(Long id) {
+        return productRepository.existsById(id);
+    }
 }

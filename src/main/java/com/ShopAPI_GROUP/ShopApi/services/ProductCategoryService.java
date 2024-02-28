@@ -12,4 +12,6 @@ public interface ProductCategoryService {
     List<ProductCategoryEntity> findAll();
 
     Optional<ProductCategoryEntity> findOne(String name);
+
+    boolean isExists(String productCategoryName);
 }

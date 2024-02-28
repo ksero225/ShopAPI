@@ -11,4 +11,6 @@ public interface ProductService {
     List<ProductEntity> findAll();
 
     Optional<ProductEntity> findOne(Long productId);
+
+    boolean isExists(Long id);
 }

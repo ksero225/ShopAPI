@@ -26,13 +26,22 @@ public class ProductCategoryController {
     }
 
     @PutMapping(path = "/products_categories/{name}")
-    public ResponseEntity<ProductCategoryDto> createProductCategory(
+    public ResponseEntity<ProductCategoryDto> createUpdateProductCategory(
             @PathVariable("name") String productCategoryName,
             @RequestBody ProductCategoryDto productCategoryDto
     ) {
         ProductCategoryEntity productCategoryEntity = productCategoryMapper.mapFrom(productCategoryDto);
-        ProductCategoryEntity savedProductCategoryEntity = categoryService.save(productCategoryName, productCategoryEntity);
-        return new ResponseEntity<>(productCategoryMapper.mapTo(savedProductCategoryEntity), HttpStatus.CREATED);
+        boolean productCategoryExists = categoryService.isExists(productCategoryName);
+        System.out.println(productCategoryExists);
+        ProductCategoryEntity savedProductCategoryEntity = categoryService.save(productCategoryEntity);
+        ProductCategoryDto savedProductCategoryDto = productCategoryMapper.mapTo(savedProductCategoryEntity);
+
+        if (productCategoryExists) {
+            return new ResponseEntity<>(savedProductCategoryDto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(savedProductCategoryDto, HttpStatus.CREATED);
+        }
+
     }
 
     @GetMapping(path = "/products_categories")

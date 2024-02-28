@@ -1,6 +1,8 @@
 package com.ShopAPI_GROUP.ShopApi.controllers;
 
 import com.ShopAPI_GROUP.ShopApi.TestDataUtil;
+import com.ShopAPI_GROUP.ShopApi.domain.dto.ProductCategoryDto;
+import com.ShopAPI_GROUP.ShopApi.domain.dto.ProductDto;
 import com.ShopAPI_GROUP.ShopApi.domain.entities.ProductCategoryEntity;
 import com.ShopAPI_GROUP.ShopApi.domain.entities.ProductEntity;
 import com.ShopAPI_GROUP.ShopApi.services.ProductService;
@@ -103,7 +105,7 @@ class ProductControllerTests {
     }
 
     @Test
-    public void testThatGetProductReturnsHttpStatus200WhenAuthorExist() throws Exception {
+    public void testThatGetProductReturnsHttpStatus200WhenProductExist() throws Exception {
         ProductCategoryEntity productCategory = TestDataUtil.createTestProductCategoryA();
         ProductEntity productEntity = TestDataUtil.createTestProductA(productCategory);
 
@@ -118,7 +120,7 @@ class ProductControllerTests {
     }
 
     @Test
-    public void testThatGetProductReturnsHttpStatus404WhenNoAuthorExist() throws Exception {
+    public void testThatGetProductReturnsHttpStatus404WhenNoProductExist() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/9999")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -128,7 +130,7 @@ class ProductControllerTests {
     }
 
     @Test
-    public void testThatGetProductReturns0WhenAuthorExist() throws Exception {
+    public void testThatGetProductReturns0WhenProductExist() throws Exception {
         ProductCategoryEntity productCategory = TestDataUtil.createTestProductCategoryA();
         ProductEntity productEntity = TestDataUtil.createTestProductA(productCategory);
 
@@ -144,5 +146,70 @@ class ProductControllerTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.productPrice").value(11.30)
         );
+    }
+
+    @Test
+    public void testThatFullUpdateProductReturnsHttpStatus200WhenNoProductExist() throws Exception {
+        ProductCategoryDto productCategoryDto = TestDataUtil.createTestProductCategoryDtoA();
+        ProductDto productDto = TestDataUtil.createTestProductDtoA(productCategoryDto);
+
+        String productDtoJson = objectMapper.writeValueAsString(productDto);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/products/9999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(productDtoJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNotFound()
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateProductReturnsHttpStatus200WhenProductExist() throws Exception {
+        ProductCategoryEntity productCategory = TestDataUtil.createTestProductCategoryA();
+        ProductEntity productEntity = TestDataUtil.createTestProductA(productCategory);
+
+        ProductEntity savedProductEntity = productService.save(productEntity);
+
+        ProductCategoryDto productCategoryDto = TestDataUtil.createTestProductCategoryDtoA();
+        ProductDto productDto = TestDataUtil.createTestProductDtoA(productCategoryDto);
+
+        String productDtoJson = objectMapper.writeValueAsString(productDto);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/products/" + savedProductEntity.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(productDtoJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatFullUpdateProductUpdatesExistingProduct() throws Exception{
+        ProductCategoryEntity productCategory = TestDataUtil.createTestProductCategoryA();
+        ProductEntity productEntity = TestDataUtil.createTestProductA(productCategory);
+
+        ProductEntity savedProductEntity = productService.save(productEntity);
+
+        ProductCategoryEntity savedProductCategory = TestDataUtil.createTestProductCategoryB();
+        ProductEntity productDto = TestDataUtil.createTestProductB(savedProductCategory);
+
+        productDto.setId(savedProductEntity.getId());
+
+        String productDtoUpdateJson = objectMapper.writeValueAsString(productDto);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/products/" + savedProductEntity.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(productDtoUpdateJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.id").value(savedProductEntity.getId())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.productName").value(productDto.getProductName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.productPrice").value(productDto.getProductPrice())
+        );
+
     }
 }
