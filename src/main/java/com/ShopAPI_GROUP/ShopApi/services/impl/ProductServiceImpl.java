@@ -38,4 +38,16 @@ public class ProductServiceImpl implements ProductService {
     public boolean isExists(Long id) {
         return productRepository.existsById(id);
     }
+
+    @Override
+    public ProductEntity partialUpdate(Long id, ProductEntity productEntity) {
+        productEntity.setId(id);
+
+        return productRepository.findById(id).map(existingAuthor -> {
+            Optional.ofNullable(productEntity.getProductName()).ifPresent(existingAuthor::setProductName);
+            Optional.ofNullable(productEntity.getProductPrice()).ifPresent(existingAuthor::setProductPrice);
+
+            return productRepository.save(existingAuthor);
+        }).orElseThrow(() -> new RuntimeException("Product does not exists"));
+    }
 }

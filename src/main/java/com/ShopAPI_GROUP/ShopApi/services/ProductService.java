@@ -13,4 +13,6 @@ public interface ProductService {
     Optional<ProductEntity> findOne(Long productId);
 
     boolean isExists(Long id);
+
+    ProductEntity partialUpdate(Long id, ProductEntity productEntity);
 }

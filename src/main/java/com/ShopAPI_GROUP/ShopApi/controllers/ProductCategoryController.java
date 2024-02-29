@@ -32,7 +32,7 @@ public class ProductCategoryController {
     ) {
         ProductCategoryEntity productCategoryEntity = productCategoryMapper.mapFrom(productCategoryDto);
         boolean productCategoryExists = categoryService.isExists(productCategoryName);
-        System.out.println(productCategoryExists);
+
         ProductCategoryEntity savedProductCategoryEntity = categoryService.save(productCategoryEntity);
         ProductCategoryDto savedProductCategoryDto = productCategoryMapper.mapTo(savedProductCategoryEntity);
 

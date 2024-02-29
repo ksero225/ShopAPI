@@ -33,23 +33,23 @@ public class ProductController {
     }
 
     @GetMapping(path = "/products")
-    public List<ProductDto> listProducts(){
+    public List<ProductDto> listProducts() {
         List<ProductEntity> products = productService.findAll();
         return products.stream().map(productMapper::mapTo).collect(Collectors.toList());
     }
 
     @GetMapping(path = "/products/{id}")
-    public ResponseEntity<ProductDto> getProduct(@PathVariable("id") Long productId){
+    public ResponseEntity<ProductDto> getProduct(@PathVariable("id") Long productId) {
         Optional<ProductEntity> foundProduct = productService.findOne(productId);
-        return foundProduct.map(ProductEntity ->{
-           ProductDto productDto = productMapper.mapTo(ProductEntity);
-           return new ResponseEntity<>(productDto, HttpStatus.OK);
+        return foundProduct.map(ProductEntity -> {
+            ProductDto productDto = productMapper.mapTo(ProductEntity);
+            return new ResponseEntity<>(productDto, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping(path = "/products/{id}")
-    public ResponseEntity<ProductDto> fullUpdateProduct(@PathVariable("id") Long id, @RequestBody ProductDto productDto){
-        if(!productService.isExists(id)){
+    public ResponseEntity<ProductDto> fullUpdateProduct(@PathVariable("id") Long id, @RequestBody ProductDto productDto) {
+        if (!productService.isExists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -61,4 +61,22 @@ public class ProductController {
                 HttpStatus.OK
         );
     }
+
+    @PatchMapping(path = "/products/{id}")
+    public ResponseEntity<ProductDto> partialUpdate(
+            @PathVariable("id") Long id,
+            @RequestBody ProductDto productDto
+    ) {
+        if (!productService.isExists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        ProductEntity productEntity = productMapper.mapFrom(productDto);
+        ProductEntity updatedProduct = productService.partialUpdate(id, productEntity);
+        return new ResponseEntity<>(
+                productMapper.mapTo(updatedProduct),
+                HttpStatus.OK
+        );
+    }
+
 }

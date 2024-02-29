@@ -1,8 +1,10 @@
 package com.ShopAPI_GROUP.ShopApi.controllers;
 
 import com.ShopAPI_GROUP.ShopApi.TestDataUtil;
+import com.ShopAPI_GROUP.ShopApi.domain.dto.ProductCategoryDto;
 import com.ShopAPI_GROUP.ShopApi.domain.entities.ProductCategoryEntity;
 import com.ShopAPI_GROUP.ShopApi.services.ProductCategoryService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -118,6 +120,51 @@ public class ProductCategoryControllerTests {
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.categoryName").value("Electronics")
+        );
+    }
+
+    @Test
+    public void testThatUpdateProductCategoryReturnsHttpStatus200Ok() throws Exception {
+        ProductCategoryEntity productCategory = TestDataUtil.createTestProductCategoryA();
+
+        ProductCategoryEntity savedProductCategory = categoryService.save(productCategory);
+
+        ProductCategoryEntity productCategoryDto = TestDataUtil.createTestProductCategoryB();
+
+        productCategoryDto.setCategoryName(savedProductCategory.getCategoryName());
+
+        String productCategoryDtoUpdateJson = objectMapper.writeValueAsString(productCategoryDto);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/products_categories/" + savedProductCategory.getCategoryName())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(productCategoryDtoUpdateJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+
+    }
+
+    @Test
+    public void testThatUpdateProductCategoryReturnsUpdatedProductCategory() throws Exception {
+        ProductCategoryEntity productCategory = TestDataUtil.createTestProductCategoryA();
+
+        ProductCategoryEntity savedProductCategory = categoryService.save(productCategory);
+
+        ProductCategoryEntity productCategoryDto = TestDataUtil.createTestProductCategoryB();
+
+        productCategoryDto.setCategoryName(savedProductCategory.getCategoryName());
+
+        productCategoryDto.setCategoryName("Milk");
+
+        String productCategoryDtoUpdateJson = objectMapper.writeValueAsString(productCategoryDto);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/products_categories/" + savedProductCategory.getCategoryName())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(productCategoryDtoUpdateJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.categoryName").value("Milk")
         );
     }
 }
