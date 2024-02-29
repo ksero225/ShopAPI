@@ -167,4 +167,27 @@ public class ProductCategoryControllerTests {
                 MockMvcResultMatchers.jsonPath("$.categoryName").value("Milk")
         );
     }
+
+    @Test
+    public void testThatDeleteProductCategoryReturnsHttpStatus204ForNonExistingProductCategory() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/products_categories/xd")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+    }
+
+    @Test
+    public void testThatDeleteProductCategoryReturnsHttpStatus204ForExistingProductCategory() throws Exception {
+        ProductCategoryEntity productCategory = TestDataUtil.createTestProductCategoryA();
+        ProductCategoryEntity savedProductCategory = categoryService.save(productCategory);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/products_categories/" + savedProductCategory.getCategoryName())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+    }
 }

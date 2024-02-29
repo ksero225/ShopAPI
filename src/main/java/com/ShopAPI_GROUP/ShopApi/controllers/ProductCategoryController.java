@@ -80,4 +80,10 @@ public class ProductCategoryController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @DeleteMapping(path = "/products_categories/{name}")
+    public ResponseEntity<Void> deleteProductCategory(@PathVariable("name") String productName){
+        categoryService.delete(productName);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    }
+
 }

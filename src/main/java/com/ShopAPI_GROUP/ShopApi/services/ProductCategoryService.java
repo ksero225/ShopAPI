@@ -15,5 +15,7 @@ public interface ProductCategoryService {
 
     boolean isExists(String productCategoryName);
 
+    void delete(String productName);
+
     //ProductCategoryEntity partialUpdate(String productCategoryName, ProductCategoryEntity productCategoryEntity);
 }

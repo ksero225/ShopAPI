@@ -187,7 +187,7 @@ class ProductControllerTests {
     }
 
     @Test
-    public void testThatFullUpdateProductUpdatesExistingProduct() throws Exception{
+    public void testThatFullUpdateProductUpdatesExistingProduct() throws Exception {
         ProductCategoryEntity productCategory = TestDataUtil.createTestProductCategoryA();
         ProductEntity productEntity = TestDataUtil.createTestProductA(productCategory);
 
@@ -263,6 +263,31 @@ class ProductControllerTests {
                 MockMvcResultMatchers.jsonPath("$.productName").value("UPDATED")
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.productPrice").value(productDto.getProductPrice())
+        );
+    }
+
+    @Test
+    public void testThatDeleteProductReturnsHttpStatus204ForNonExistingProduct() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/products/10")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+    }
+
+    @Test
+    public void testThatDeleteProductReturnsHttpStatus204ForExistingProduct() throws Exception {
+        ProductCategoryEntity productCategory = TestDataUtil.createTestProductCategoryA();
+        ProductEntity productEntity = TestDataUtil.createTestProductA(productCategory);
+
+        ProductEntity savedProductEntity = productService.save(productEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/products/" + savedProductEntity.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
         );
     }
 }

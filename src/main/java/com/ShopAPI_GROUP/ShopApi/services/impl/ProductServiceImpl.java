@@ -50,4 +50,9 @@ public class ProductServiceImpl implements ProductService {
             return productRepository.save(existingProduct);
         }).orElseThrow(() -> new RuntimeException("Product does not exists"));
     }
+
+    @Override
+    public void delete(Long id) {
+        productRepository.deleteById(id);
+    }
 }

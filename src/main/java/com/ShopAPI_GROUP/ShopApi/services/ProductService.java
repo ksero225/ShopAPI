@@ -15,4 +15,6 @@ public interface ProductService {
     boolean isExists(Long id);
 
     ProductEntity partialUpdate(Long id, ProductEntity productEntity);
+
+    void delete(Long id);
 }

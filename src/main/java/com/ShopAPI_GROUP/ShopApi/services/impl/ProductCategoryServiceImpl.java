@@ -45,6 +45,10 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         return productCategoryRepository.existsById(productCategoryName);
     }
 
+    @Override
+    public void delete(String productName) {
+        productCategoryRepository.deleteById(productName);
+    }
 
     // Partial update for product category does not make any sense, because its only one field, leaving this method for future.
 //
