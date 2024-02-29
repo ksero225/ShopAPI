@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 @RestController
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
-    private Mapper<ProductEntity, ProductDto> productMapper;
+    private final Mapper<ProductEntity, ProductDto> productMapper;
 
 
     public ProductController(ProductService productService, Mapper<ProductEntity, ProductDto> productMapper) {

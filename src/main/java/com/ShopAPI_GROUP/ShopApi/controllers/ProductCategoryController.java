@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @RestController
 public class ProductCategoryController {
 
-    private ProductCategoryService categoryService;
+    private final ProductCategoryService categoryService;
 
-    private Mapper<ProductCategoryEntity, ProductCategoryDto> productCategoryMapper;
+    private final Mapper<ProductCategoryEntity, ProductCategoryDto> productCategoryMapper;
 
     public ProductCategoryController(ProductCategoryService categoryService, Mapper<ProductCategoryEntity, ProductCategoryDto> productCategoryMapper) {
         this.categoryService = categoryService;
@@ -83,7 +83,7 @@ public class ProductCategoryController {
     @DeleteMapping(path = "/products_categories/{name}")
     public ResponseEntity<Void> deleteProductCategory(@PathVariable("name") String productName){
         categoryService.delete(productName);
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

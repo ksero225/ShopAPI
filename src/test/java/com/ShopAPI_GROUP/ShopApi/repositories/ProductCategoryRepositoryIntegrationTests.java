@@ -2,7 +2,6 @@ package com.ShopAPI_GROUP.ShopApi.repositories;
 
 import com.ShopAPI_GROUP.ShopApi.TestDataUtil;
 import com.ShopAPI_GROUP.ShopApi.domain.entities.ProductCategoryEntity;
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ProductCategoryRepositoryIntegrationTests {
 
-    private ProductCategoryRepository underTest;
+    private final ProductCategoryRepository underTest;
 
     @Autowired
     public ProductCategoryRepositoryIntegrationTests(ProductCategoryRepository underTest) {

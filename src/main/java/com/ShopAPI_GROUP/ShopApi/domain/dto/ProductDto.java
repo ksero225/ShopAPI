@@ -1,9 +1,5 @@
 package com.ShopAPI_GROUP.ShopApi.domain.dto;
 
-import com.ShopAPI_GROUP.ShopApi.domain.entities.ProductCategoryEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,10 +1,8 @@
 package com.ShopAPI_GROUP.ShopApi.controllers;
 
 import com.ShopAPI_GROUP.ShopApi.TestDataUtil;
-import com.ShopAPI_GROUP.ShopApi.domain.dto.ProductCategoryDto;
 import com.ShopAPI_GROUP.ShopApi.domain.entities.ProductCategoryEntity;
 import com.ShopAPI_GROUP.ShopApi.services.ProductCategoryService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,9 +22,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @AutoConfigureMockMvc
 public class ProductCategoryControllerTests {
 
-    private ProductCategoryService categoryService;
-    private MockMvc mockMvc;
-    private ObjectMapper objectMapper;
+    private final ProductCategoryService categoryService;
+    private final MockMvc mockMvc;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public ProductCategoryControllerTests(ProductCategoryService categoryService, MockMvc mockMvc) {

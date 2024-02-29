@@ -51,8 +51,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     // Partial update for product category does not make any sense, because its only one field, leaving this method for future.
-//
-//    @Override
+//   @Override
 //    public ProductCategoryEntity partialUpdate(String productCategoryName, ProductCategoryEntity productCategoryEntity) {
 //        productCategoryEntity.setCategoryName(productCategoryName);
 //

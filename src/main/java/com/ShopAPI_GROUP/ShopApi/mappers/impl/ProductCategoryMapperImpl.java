@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductCategoryMapperImpl implements Mapper<ProductCategoryEntity, ProductCategoryDto> {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public ProductCategoryMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
