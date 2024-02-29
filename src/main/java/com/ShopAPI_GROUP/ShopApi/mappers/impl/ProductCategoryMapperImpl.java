@@ -24,4 +24,6 @@ public class ProductCategoryMapperImpl implements Mapper<ProductCategoryEntity, 
     public ProductCategoryEntity mapFrom(ProductCategoryDto productCategoryDto) {
         return modelMapper.map(productCategoryDto, ProductCategoryEntity.class);
     }
+
+
 }

@@ -44,6 +44,27 @@ public class ProductCategoryController {
 
     }
 
+    // Partial update for product category does not make any sense, because its only one field, leaving this method for future.
+
+//    @PatchMapping(path = "/products_categories/{name}")
+//    public ResponseEntity<ProductCategoryDto> partialUpdateProductCategory(
+//            @PathVariable("name") String productCategoryName,
+//            @RequestBody ProductCategoryDto productCategoryDto
+//    ) {
+//
+//        if(!categoryService.isExists(productCategoryName)){
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//
+//        ProductCategoryEntity productCategoryEntity = productCategoryMapper.mapFrom(productCategoryDto);
+//        ProductCategoryEntity updatedProductCategoryEntity = categoryService.partialUpdate(productCategoryName, productCategoryEntity);
+//
+//        return new ResponseEntity<>(
+//                productCategoryMapper.mapTo(updatedProductCategoryEntity),
+//                HttpStatus.OK
+//        );
+//    }
+
     @GetMapping(path = "/products_categories")
     public List<ProductCategoryDto> listProductCategories() {
         List<ProductCategoryEntity> productCategories = categoryService.findAll();

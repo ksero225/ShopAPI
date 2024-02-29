@@ -43,11 +43,11 @@ public class ProductServiceImpl implements ProductService {
     public ProductEntity partialUpdate(Long id, ProductEntity productEntity) {
         productEntity.setId(id);
 
-        return productRepository.findById(id).map(existingAuthor -> {
-            Optional.ofNullable(productEntity.getProductName()).ifPresent(existingAuthor::setProductName);
-            Optional.ofNullable(productEntity.getProductPrice()).ifPresent(existingAuthor::setProductPrice);
+        return productRepository.findById(id).map(existingProduct -> {
+            Optional.ofNullable(productEntity.getProductName()).ifPresent(existingProduct::setProductName);
+            Optional.ofNullable(productEntity.getProductPrice()).ifPresent(existingProduct::setProductPrice);
 
-            return productRepository.save(existingAuthor);
+            return productRepository.save(existingProduct);
         }).orElseThrow(() -> new RuntimeException("Product does not exists"));
     }
 }

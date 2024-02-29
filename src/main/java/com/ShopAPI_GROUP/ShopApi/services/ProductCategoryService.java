@@ -14,4 +14,6 @@ public interface ProductCategoryService {
     Optional<ProductCategoryEntity> findOne(String name);
 
     boolean isExists(String productCategoryName);
+
+    //ProductCategoryEntity partialUpdate(String productCategoryName, ProductCategoryEntity productCategoryEntity);
 }

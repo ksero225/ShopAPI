@@ -44,4 +44,18 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     public boolean isExists(String productCategoryName) {
         return productCategoryRepository.existsById(productCategoryName);
     }
+
+
+    // Partial update for product category does not make any sense, because its only one field, leaving this method for future.
+//
+//    @Override
+//    public ProductCategoryEntity partialUpdate(String productCategoryName, ProductCategoryEntity productCategoryEntity) {
+//        productCategoryEntity.setCategoryName(productCategoryName);
+//
+//        return productCategoryRepository.findById(productCategoryName).map(existingProductCategory -> {
+//            Optional.ofNullable(productCategoryEntity.getCategoryName()).ifPresent(existingProductCategory::setCategoryName);
+//            System.out.println(productCategoryEntity.getCategoryName());
+//            return productCategoryRepository.save(existingProductCategory);
+//        }).orElseThrow(() -> new RuntimeException("Product category does not exists"));
+//    }
 }
