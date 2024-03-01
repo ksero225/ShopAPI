@@ -1,9 +1,15 @@
 package com.ShopAPI_GROUP.ShopApi.services.impl;
 
+import com.ShopAPI_GROUP.ShopApi.domain.entities.ProductCategoryEntity;
 import com.ShopAPI_GROUP.ShopApi.domain.entities.ProductEntity;
+import com.ShopAPI_GROUP.ShopApi.repositories.ProductCategoryRepository;
 import com.ShopAPI_GROUP.ShopApi.repositories.ProductRepository;
 import com.ShopAPI_GROUP.ShopApi.services.ProductService;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,13 +20,26 @@ import java.util.stream.StreamSupport;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductCategoryRepository categoryRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductCategoryRepository categoryRepository) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
     public ProductEntity save(ProductEntity productEntity) {
+        String categoryName = productEntity.getProductCategoryEntity().getCategoryName();
+        Optional<ProductCategoryEntity> existingCategory = categoryRepository.findById(categoryName);
+
+        if (existingCategory.isPresent()) {
+            productEntity.setProductCategoryEntity(existingCategory.get());
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Category not found"
+            );
+        }
+        System.out.println("---------------" + categoryRepository.findById(categoryName));
         return productRepository.save(productEntity);
     }
 
